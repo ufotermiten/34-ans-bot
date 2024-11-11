@@ -15,8 +15,8 @@ def days_until_propellerkeps():
 
         # Step 3: Extract information
         # For example, get the page title
-        läsvecka = 3 # int(soup.title.string.split(" ")[1])
-        läsdag = 4 # datetime.datetime.now().weekday() + 1
+        läsvecka = int(soup.title.string.split(" ")[1])
+        läsdag = datetime.datetime.now().weekday() + 1
 
         if str(läsvecka) + str(läsdag) == "34" or (läsvecka - 1) * 5 + läsdag == 34:
             return "@everyone Du ska ha på dig propellerkeps idag!!"
