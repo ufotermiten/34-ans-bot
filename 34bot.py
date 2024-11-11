@@ -5,6 +5,7 @@ import time
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
+from DagarTillPropellerkeps import days_until_propellerkeps
 
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
@@ -49,6 +50,10 @@ async def nine_nine(ctx, arg):
         else:
             await ctx.channel.send(i + 1)
         time.sleep(0.1)
+
+@bot.command(name="count")
+async def nine_nine(ctx):
+    await ctx.channel.send(days_until_propellerkeps())
 
 
 @bot.command(name="34")
