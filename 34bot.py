@@ -51,7 +51,7 @@ async def nine_nine(ctx, arg):
             await ctx.channel.send(i + 1)
         time.sleep(0.1)
 
-@bot.command(name="count")
+@bot.command(name="skajaghakeps")
 async def nine_nine(ctx):
     await ctx.channel.send(days_until_propellerkeps())
 
