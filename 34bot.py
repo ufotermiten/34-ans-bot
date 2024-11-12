@@ -11,39 +11,43 @@ load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
 GUILD = os.getenv("DISCORD_GUILD")
 intents = discord.Intents.default()
+# The bot is intendend to see messages and members
 intents.message_content = True
 intents.members = True
-# client = discord.Client(intents=intents)
 bot = commands.Bot(intents=intents, command_prefix="/")
 
 
+# Ready event
 @bot.event
 async def on_ready():
     for guild in bot.guilds:
         if guild.name == GUILD:
             break
-
     print(
         f"{bot.user} is connected to the following guild:\n"
         f"{guild.name}(id: {guild.id})"
     )
-    for member in guild.members:
-        print(member)
 
 
+# Message event
 @bot.event
 async def on_message(message):
     if message.author == bot.user:
         return
     if message.content.startswith("Pung"):
         await message.channel.send("Hello!")
+        # If Hedda
     if message.author.id == 522004874083172363:
-        await message.reply("Opp")
+        await message.add_reaction("<:opp:1305899202819391508>")
+        # If Lidl
+    if message.author.id == 226343548423766016:
+        await message.add_reaction("<:Lidl:1305900704199606333>")
     await bot.process_commands(message)
 
 
+# Count command
 @bot.command(name="count")
-async def nine_nine(ctx, arg):
+async def count(ctx, arg):
     for i in range(int(arg)):
         if i + 1 == 34:
             await ctx.channel.send("<:34_an:1305515512578441256>")
@@ -51,8 +55,10 @@ async def nine_nine(ctx, arg):
             await ctx.channel.send(i + 1)
         time.sleep(0.1)
 
+
+# Ska jag ha keps
 @bot.command(name="skajaghakeps")
-async def nine_nine(ctx):
+async def skajaghakeps(ctx):
     await ctx.channel.send(days_until_propellerkeps())
 
 
