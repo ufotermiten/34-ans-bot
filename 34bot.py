@@ -47,7 +47,7 @@ async def on_message(message):
 
 # Count command
 @bot.command(name="count")
-async def count(ctx, arg):
+async def count(ctx, arg=34):
     for i in range(int(arg)):
         if i + 1 == 34:
             await ctx.channel.send("<:34_an:1305515512578441256>")
@@ -63,7 +63,7 @@ async def skajaghakeps(ctx):
 
 
 @bot.command(name="34")
-async def thirtyfour(ctx, arg):
+async def thirtyfour(ctx, arg=34):
     out = ""
     for i in range(int(arg)):
         out += "<:34_an:1305515512578441256>"
