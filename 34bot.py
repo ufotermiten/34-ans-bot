@@ -8,6 +8,7 @@ import asyncio
 from discord.ext import commands
 from dotenv import load_dotenv
 from DagarTillPropellerkeps import days_until_propellerkeps
+from sittning import sittningsloop
 
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
