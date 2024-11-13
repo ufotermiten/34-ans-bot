@@ -3,6 +3,8 @@
 import os
 import time
 import discord
+import datetime
+import asyncio
 from discord.ext import commands
 from dotenv import load_dotenv
 from DagarTillPropellerkeps import days_until_propellerkeps
@@ -68,6 +70,25 @@ async def thirtyfour(ctx, arg):
     for i in range(int(arg)):
         out += "<:34_an:1305515512578441256>"
     await ctx.channel.send(out)
+
+
+status = False
+
+
+@bot.command(name="start_counter")
+async def counter(ctx):
+    global status
+    status = True
+    while status:
+        now = datetime.datetime.now().time()
+        await ctx.channel.send(now)
+        await asyncio.sleep(10)
+
+
+@bot.command(name="stop_counter")
+async def stop(ctx):
+    global status
+    status = False
 
 
 bot.run(TOKEN)
