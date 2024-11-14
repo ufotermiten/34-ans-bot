@@ -8,7 +8,7 @@ import asyncio
 from discord.ext import commands
 from dotenv import load_dotenv
 from DagarTillPropellerkeps import days_until_propellerkeps
-from sittning import sittningsloop
+
 
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
@@ -26,6 +26,7 @@ async def on_ready():
     for guild in bot.guilds:
         if guild.name == GUILD:
             break
+    await bot.tree.sync()
     print(
         f"{bot.user} is connected to the following guild:\n"
         f"{guild.name}(id: {guild.id})"
@@ -49,8 +50,10 @@ async def on_message(message):
 
 
 # Count command
-@bot.command(name="count")
-async def count(ctx, arg):
+@bot.tree.command(
+    name="count", description="Skriv hur högt du vill att boten ska räkna"
+)
+async def count(ctx, arg=34):
     for i in range(int(arg)):
         if i + 1 == 34:
             await ctx.channel.send("<:34_an:1305515512578441256>")
@@ -60,36 +63,52 @@ async def count(ctx, arg):
 
 
 # Ska jag ha keps
-@bot.command(name="skajaghakeps")
+@bot.tree.command(name="skajaghakeps", description="Ska jag ha keps idag?")
 async def skajaghakeps(ctx):
-    await ctx.channel.send(days_until_propellerkeps())
+    await ctx.response.send_message(days_until_propellerkeps())
 
 
-@bot.command(name="34")
-async def thirtyfour(ctx, arg):
+@bot.tree.command(name="34", description="Skriv så många 34 du vill ha")
+async def thirtyfour(ctx, arg=34):
     out = ""
     for i in range(int(arg)):
         out += "<:34_an:1305515512578441256>"
     await ctx.channel.send(out)
 
 
-status = False
+sittning_status = False
 
 
-@bot.command(name="start_counter")
-async def counter(ctx):
-    global status
-    status = True
-    while status:
-        now = datetime.datetime.now().time()
-        await ctx.channel.send(now)
-        await asyncio.sleep(10)
+# Start sittning
+@bot.tree.command(name="start_sittning", description="Sätter boten i sittningsläge")
+async def start_sittning(ctx):
+    global sittning_status
+    sittning_status = True
+    while sittning_status:
+        minute = datetime.datetime.now().minute
+        time_until_24 = (24 - minute) % 60
+        hour = datetime.datetime.now().hour
+        if time_until_24 > 24:
+            hour = hour + 1
+        hour = str(hour)
+        if len(hour) == 1:
+            hour = "0" + hour
+        # Sov tills klockan är 24
+        await asyncio.sleep(time_until_24 * 60)
+        # Skicka bara om sittning fortfarande är på
+        if sittning_status:
+            await ctx.channel.send("@everyone KLOCKAN ÄR 24")
+        # Sov i 9 min
+        await asyncio.sleep(9 * 60)
+        if sittning_status:
+            await ctx.channel.send("Klockan är 33")
 
 
-@bot.command(name="stop_counter")
-async def stop(ctx):
-    global status
-    status = False
+# Stoppa sittning
+@bot.tree.command(name="stop_sittning", description="Tar boten ur sittningsläge")
+async def stop_sittning(ctx):
+    global sittning_status
+    sittning_status = False
 
 
 bot.run(TOKEN)
