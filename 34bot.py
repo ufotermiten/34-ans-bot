@@ -51,11 +51,11 @@ async def on_message(message):
 
 # Count command
 
+
 @bot.tree.command(
     name="count", description="Skriv hur högt du vill att boten ska räkna"
 )
-
-async def count(ctx, arg=34):
+async def count(ctx, arg: int = 34):
     for i in range(int(arg)):
         if i + 1 == 34:
             await ctx.channel.send("<:34_an:1305515512578441256>")
@@ -70,10 +70,8 @@ async def skajaghakeps(ctx):
     await ctx.response.send_message(days_until_propellerkeps())
 
 
-
 @bot.tree.command(name="34", description="Skriv så många 34 du vill ha")
-
-async def thirtyfour(ctx, arg=34):
+async def thirtyfour(ctx, arg: int = 34):
     out = ""
     for i in range(int(arg)):
         out += "<:34_an:1305515512578441256>"
