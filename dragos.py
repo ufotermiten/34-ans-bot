@@ -5,10 +5,12 @@ import cloudscraper
 
 root = "https://www.comics.org"
 
+
 def djungelordspråksGenerator():
     with open("djungelordspråk.txt", encoding="UTF-8") as f:
         phrases = f.readlines()
     return random.choice(phrases)
+
 
 def get_cover_link_list():
     # Define the URL of the webpage (Cloudflare-protected page)
@@ -40,7 +42,9 @@ def get_cover_link_list():
         # print(html.tostring(element, pretty_print=True).decode())
 
         # If you want to extract links inside this element
-        links = element.xpath(".//a/@href")  # Get all href attributes from 'a' tags inside the element
+        links = element.xpath(
+            ".//a/@href"
+        )  # Get all href attributes from 'a' tags inside the element
         for link in links:
             if link.endswith("/4/"):
                 clean_list.append(root + link)
@@ -48,6 +52,7 @@ def get_cover_link_list():
         print("No element found at the given XPath")
 
     return clean_list
+
 
 def create_txt_file():
     with open("link_to_cover_list.txt", "w+") as f:
@@ -71,15 +76,21 @@ def get_cover():
             page_content = scraper.get(url)
 
             # Parse the HTML content using BeautifulSoup
-            soup = BeautifulSoup(page_content.text, 'html.parser')
+            soup = BeautifulSoup(page_content.text, "html.parser")
 
             # Find all 'img' tags with a specific class (e.g., 'example-class')
-            img_elements = soup.find_all('img', class_='cover_img')
+            img_elements = soup.find_all("img", class_="cover_img")
 
             # Print the 'src' attribute of each image
             for img in img_elements:
-                link = img.get('src')
+                link = img.get("src")
                 f.write(link + "\n")
                 cover_img_link_list.append(link)  # Prints the URL of the image
 
     return cover_img_link_list
+
+
+def get_cover_for_reals():
+    with open("cover_img_link.txt") as f:
+        lines = f.readlines()
+        return random.choice(lines)[:-2:]

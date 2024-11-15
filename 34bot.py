@@ -8,7 +8,7 @@ import asyncio
 from discord.ext import commands
 from dotenv import load_dotenv
 from DagarTillPropellerkeps import days_until_propellerkeps
-
+from dragos import get_cover_for_reals
 
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
@@ -111,6 +111,13 @@ async def start_sittning(ctx):
 async def stop_sittning(ctx):
     global sittning_status
     sittning_status = False
+
+
+@bot.tree.command(name="cover", description="Ge mig cover")
+async def cover(ctx):
+    ctx.response.defer()
+    cover = get_cover_for_reals()
+    await ctx.response.send_message(cover)
 
 
 bot.run(TOKEN)
