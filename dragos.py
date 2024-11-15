@@ -1,8 +1,5 @@
 import random
-import requests
 from bs4 import BeautifulSoup
-from lxml import html
-import cfscrape
 from lxml import html
 import cloudscraper
 
@@ -58,27 +55,31 @@ def create_txt_file():
             f.write(link + "\n")
 
 
-
 def get_cover():
+    cover_img_link_list = list()
+
     with open("link_to_cover_list.txt") as f:
         links = f.readlines()
     # Define the URL of the webpage (Cloudflare-protected page)
-    url = random.choice(links)[:-1]
+    with open("cover_img_link_2.txt", "w+") as f:
+        for i, url in enumerate(links):
+            url = url[:-1]
+            print(f"{i+1}/{len(links)}: {url}")
+            # Create a scraper object to handle Cloudflare's anti-bot protection
+            scraper = cloudscraper.create_scraper()
+            # Send a GET request to fetch the HTML content of the page
+            page_content = scraper.get(url)
 
-    # Create a scraper object to handle Cloudflare's anti-bot protection
-    # Create a scraper object that handles Cloudflare's anti-bot protection
-    scraper = cloudscraper.create_scraper()
+            # Parse the HTML content using BeautifulSoup
+            soup = BeautifulSoup(page_content.text, 'html.parser')
 
-    # Send a GET request to fetch the HTML content of the page
-    page_content = scraper.get(url).content
+            # Find all 'img' tags with a specific class (e.g., 'example-class')
+            img_elements = soup.find_all('img', class_='cover_img')
 
-    # Parse the HTML content using BeautifulSoup
-    soup = BeautifulSoup(page_content, 'html.parser')
+            # Print the 'src' attribute of each image
+            for img in img_elements:
+                link = img.get('src')
+                f.write(link + "\n")
+                cover_img_link_list.append(link)  # Prints the URL of the image
 
-    # Find all 'img' tags with a specific class (e.g., 'example-class')
-    img_elements = soup.find_all('img', class_='cover_img')
-
-    print(img_elements)
-    # Print the 'src' attribute of each image
-    for img in img_elements:
-        return img.get('src')  # Prints the URL of the image
+    return cover_img_link_list
