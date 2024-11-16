@@ -18,7 +18,10 @@ for (const folder of commandFolders) {
 	for (const file of commandFiles) {
 		const filePath = path.join(commandsPath, file);
 		const command = require(filePath);
+
 		if ('data' in command && 'execute' in command) {
+		  // Don't register 'reload' command if in production
+			if (command.data.name == 'reload' && process.env.NODE_ENV == 'production') continue;
 			commands.push(command.data.toJSON());
 		}
 		else {
@@ -32,19 +35,28 @@ const rest = new REST().setToken(token);
 
 // and deploy your commands!
 (async () => {
-	try {
-		console.log(`Started refreshing ${commands.length} application (/) commands.`);
+	// If production, remove all guild commands and register all loaded commands globally.
+	// If development, don't touch global commands and only reload guild commands
+	if (process.env.NODE_ENV == 'production') {
+		await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: [] })
+			.then(() => console.log('Successfully deleted all guild commands.'))
+			.catch(console.error);
 
-		// The put method is used to fully refresh all commands in the guild with the current set
-		const data = await rest.put(
-			Routes.applicationGuildCommands(clientId, guildId),
-			{ body: commands },
-		);
-
-		console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+		try {
+			const data = await rest.put(Routes.applicationCommands(clientId), { body:commands });
+			console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+		}
+		catch (error) {
+			console.error(error);
+		}
 	}
-	catch (error) {
-		// And of course, make sure you catch and log any errors!
-		console.error(error);
+	else {
+		try {
+			const data = await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body:commands });
+			console.log(`Successfully reloaded ${data.length} guild (/) commands.`);
+		}
+		catch (error) {
+			console.error(error);
+		}
 	}
 })();
