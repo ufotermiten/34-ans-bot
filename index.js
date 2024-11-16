@@ -4,8 +4,10 @@ const path = require('node:path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 require('dotenv').config();
 
+const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions];
+
 // Create a new client instance
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({ intents: intents });
 
 client.commands = new Collection();
 
