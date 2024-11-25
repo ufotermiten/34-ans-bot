@@ -1,5 +1,16 @@
 const fs = require('fs');
 
+const { SlashCommandBuilder } = require('discord.js');
+
+module.exports = {
+	data: new SlashCommandBuilder()
+		.setName('djungelordspråk')
+		.setDescription('Sprider Dragos visa ord'),
+	async execute(interaction) {
+		interaction.reply({ content: (getRandomDjungelordspråk()).toString() });
+	},
+};
+
 /** Function for randomly select a djungelordspråk from a predefined text file
  *
  * @returns str
@@ -13,23 +24,6 @@ function getRandomDjungelordspråk() {
 		djungelordspråkList.pop();
 		const ordspråk = djungelordspråkList[Math.floor(Math.random() * djungelordspråkList.length)];
 		return ordspråk;
-	}
-	catch (err) {
-		console.error('Error reading file:', err);
-	}
-}
-
-/** Function for randomly selects a cover for a Dragos issue and gets the image link
- *
- * @returns str
- */
-function getRandomCover() {
-	try {
-		// Read the file synchronously
-		const data = fs.readFileSync('cover_img_link.txt', 'utf-8');
-		const cover_img_link_list = data.split('\n');
-		const cover_img_link = cover_img_link_list[Math.floor(Math.random() * cover_img_link_list.length)];
-		return cover_img_link;
 	}
 	catch (err) {
 		console.error('Error reading file:', err);

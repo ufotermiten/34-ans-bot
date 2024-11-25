@@ -1,6 +1,17 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 
+const { SlashCommandBuilder } = require('discord.js');
+
+module.exports = {
+	data: new SlashCommandBuilder()
+		.setName('skajaghakeps')
+		.setDescription('För dig som undrar om du ska ha keps på dig'),
+	async execute(interaction) {
+		interaction.channel.send({ content: (await daysUntilPropellerkeps()).toString() });
+	},
+};
+
 // TODO add support for different LP
 /**
  * Calculates and prints how many days until you should wear propellerkeps aswells as the orientation
@@ -30,10 +41,10 @@ async function daysUntilPropellerkeps() {
 		else if (`${läsvecka}${läsdag}` === '43') {
 			return '@everyone Du ska ha på dig propellerkeps *baklänges* idag!!';
 		}
-		else if (läsvecka < 3) {
+		else if (läsvecka < 4) {
 			return `Det är ${(3 - läsvecka) * 7 + 4 - läsdag} dagar kvar tills du ska ha på dig propellerkeps`;
 		}
-		else if (läsvecka < 4) {
+		else if (läsvecka < 5) {
 			return `Det är ${(4 - läsvecka) * 7 + 5 - läsdag} dagar kvar tills du ska ha på dig propellerkeps *baklänges*`;
 		}
 		else if (läsvecka < (läsvecka - 1) * 5 + läsdag) {
@@ -48,7 +59,3 @@ async function daysUntilPropellerkeps() {
 	}
 }
 
-// Example usage
-daysUntilPropellerkeps().then((message) => {
-	console.log(message);
-});
