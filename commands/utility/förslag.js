@@ -18,16 +18,22 @@ module.exports = {
 			option
 				.setName('motivering')
 				.setDescription('Varför är ditt förslag ett bra förslag?')
+				.setRequired(true))
+		.addStringOption(option =>
+			option
+				.setName('namn')
+				.setDescription('Vad heter du?')
 				.setRequired(true)),
 	async execute(interaction) {
 		const suggestion = { title: interaction.options.getString('titel'),
 			desc: interaction.options.getString('beskrivning'),
 			justif: interaction.options.getString('motivering'),
+			name: interaction.options.getString('namn'),
 		};
 
 		const owner = 'ufotermiten';
 		const repo = '34-ans-bot';
-		const body = `## Beskrivning\n${suggestion.desc}\n## Motivering\n${suggestion.justif}`;
+		const body = `## Beskrivning\n${suggestion.desc}\n## Motivering\n${suggestion.justif}\n### Namn\n${suggestion.name}`;
 
 		const { Octokit } = await import('@octokit/core');
 
