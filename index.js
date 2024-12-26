@@ -17,14 +17,19 @@ const commandFolders = fs.readdirSync(foldersPath);
 for (const folder of commandFolders) {
 	const commandsPath = path.join(foldersPath, folder);
 	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+	// Don't load 'reload' command if in production, should not be accessible by everyone
+	if (process.argv[2] == 'production') {
+		const reloadIndex = commandFiles.indexOf('reload.js');
+		if (reloadIndex !== -1) {
+			commandFiles.splice(commandFiles.indexOf('reload.js'), 1);
+		}
+	}
 	for (const file of commandFiles) {
 		const filePath = path.join(commandsPath, file);
 		const command = require(filePath);
 		// Set a new item in the Collection with the key as the command name and the value as the exported module
 		{
 			if ('data' in command && 'execute' in command) {
-				// Don't load 'reload' command if in production, should not be accessible by everyone
-				if (command.data.name == 'reload' && process.env.NODE_ENV == 'production') continue;
 				client.commands.set(command.data.name, command);
 			}
 			else {

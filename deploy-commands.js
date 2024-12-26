@@ -14,14 +14,19 @@ for (const folder of commandFolders) {
 	// Grab all the command files from the commands directory you created earlier
 	const commandsPath = path.join(foldersPath, folder);
 	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+	// Don't register 'reload' command if in production
+	if (process.argv[2] == 'production') {
+		const reloadIndex = commandFiles.indexOf('reload.js');
+		if (reloadIndex !== -1) {
+			commandFiles.splice(commandFiles.indexOf('reload.js'), 1);
+		}
+	}
 	// Grab the SlashCommandBuilder#toJSON() output of each command's data for deployment
 	for (const file of commandFiles) {
 		const filePath = path.join(commandsPath, file);
 		const command = require(filePath);
 
 		if ('data' in command && 'execute' in command) {
-		  // Don't register 'reload' command if in production
-			if (command.data.name == 'reload' && process.env.NODE_ENV == 'production') continue;
 			commands.push(command.data.toJSON());
 		}
 		else {
@@ -37,7 +42,7 @@ const rest = new REST().setToken(token);
 (async () => {
 	// If production, remove all guild commands and register all loaded commands globally.
 	// If development, don't touch global commands and only reload guild commands
-	if (process.env.NODE_ENV == 'production') {
+	if (process.argv[2] == 'production') {
 		await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: [] })
 			.then(() => console.log('Successfully deleted all guild commands.'))
 			.catch(console.error);
