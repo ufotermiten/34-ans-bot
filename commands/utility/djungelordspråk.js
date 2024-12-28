@@ -19,7 +19,7 @@ function getRandomDjungelordspråk() {
 	try {
 		// Read the file synchronously
 		const data = fs.readFileSync('djungelordspråk.txt', 'utf-8');
-		const djungelordspråkList = data.split('\r\n');
+		const djungelordspråkList = data.split('\n');
 		// Remove the last empty element if it exists
 		djungelordspråkList.pop();
 		const ordspråk = djungelordspråkList[Math.floor(Math.random() * djungelordspråkList.length)];
