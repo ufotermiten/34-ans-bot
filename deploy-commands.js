@@ -46,6 +46,9 @@ const rest = new REST().setToken(token);
 		await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: [] })
 			.then(() => console.log('Successfully deleted all guild commands.'))
 			.catch(console.error);
+		await rest.put(Routes.applicationCommands(clientId, guildId), { body: [] })
+			.then(() => console.log('Successfully deleted all application commands.'))
+			.catch(console.error);
 
 		try {
 			const data = await rest.put(Routes.applicationCommands(clientId), { body:commands });
@@ -57,6 +60,12 @@ const rest = new REST().setToken(token);
 	}
 	else {
 		try {
+			await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: [] })
+				.then(() => console.log('Successfully deleted all guild commands.'))
+				.catch(console.error);
+			await rest.put(Routes.applicationCommands(clientId, guildId), { body: [] })
+				.then(() => console.log('Successfully deleted all application commands.'))
+				.catch(console.error);
 			const data = await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body:commands });
 			console.log(`Successfully reloaded ${data.length} guild (/) commands.`);
 		}
