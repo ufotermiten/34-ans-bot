@@ -43,14 +43,14 @@ const rest = new REST().setToken(token);
 	// If production, remove all guild commands and register all loaded commands globally.
 	// If development, don't touch global commands and only reload guild commands
 	if (process.argv[2] == 'production') {
-		await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: [] })
-			.then(() => console.log('Successfully deleted all guild commands.'))
-			.catch(console.error);
-		await rest.put(Routes.applicationCommands(clientId, guildId), { body: [] })
-			.then(() => console.log('Successfully deleted all application commands.'))
-			.catch(console.error);
-
 		try {
+			await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: [] })
+				.then(() => console.log('Successfully deleted all guild commands.'))
+				.catch(console.error);
+			await rest.put(Routes.applicationCommands(clientId, guildId), { body: [] })
+				.then(() => console.log('Successfully deleted all application commands.'))
+				.catch(console.error);
+
 			const data = await rest.put(Routes.applicationCommands(clientId), { body:commands });
 			console.log(`Successfully reloaded ${data.length} application (/) commands.`);
 		}
@@ -66,6 +66,7 @@ const rest = new REST().setToken(token);
 			await rest.put(Routes.applicationCommands(clientId, guildId), { body: [] })
 				.then(() => console.log('Successfully deleted all application commands.'))
 				.catch(console.error);
+
 			const data = await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body:commands });
 			console.log(`Successfully reloaded ${data.length} guild (/) commands.`);
 		}
