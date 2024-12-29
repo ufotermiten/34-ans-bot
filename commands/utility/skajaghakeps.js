@@ -8,13 +8,13 @@ module.exports = {
 		.setName('skajaghakeps')
 		.setDescription('För dig som undrar om du ska ha keps på dig'),
 	async execute(interaction) {
-		interaction.channel.send({ content: (await daysUntilPropellerkeps()).toString() });
+		interaction.reply({ content: (await daysUntilPropellerkeps()).toString() });
 	},
 };
 
 // TODO add support for different LP
 /**
- * Calculates and prints how many days until you should wear propellerkeps aswells as the orientation
+ * Calculates and prints how many days until you should wear propellerkeps as well as the orientation
  *
  * @returns str
  */
