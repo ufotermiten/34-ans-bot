@@ -1,9 +1,6 @@
-const cron = require('cron');
-
 const { SlashCommandBuilder } = require('discord.js');
-const scheduledMessage = new cron.CronJob('00 33 * * * *', () => {
-	interaction.channel.send('@everyone Om 1 minut är klockan 34!');
-});
+
+const { knolvalsReminder } = require('../../index');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -13,19 +10,18 @@ module.exports = {
 		const hasAdminRole = interaction.member.roles.cache.some(role => role.name.toLowerCase() === 'admin');
 
 		if (!hasAdminRole) {
-		// If the user does not have the admin role
-		interaction.reply('Din råtta du är inte admin');
-		return;
+			// If the user does not have the admin role
+			interaction.reply('Din råtta du är inte admin');
+			return;
 		}
-		
-		console.log(scheduledMessage.running);
-		if (!scheduledMessage.running) {
+
+		if (!knolvalsReminder.running) {
 			// When you want to start it, use:
 			interaction.reply('Sittningsläget **AKTIVERAT**');
-			scheduledMessage.start();
+			knolvalsReminder.start();
 		}
 		else {
-			scheduledMessage.stop();
+			knolvalsReminder.stop();
 			interaction.reply('Sittningsläget **AVAKTIVERAT**');
 		}
 
