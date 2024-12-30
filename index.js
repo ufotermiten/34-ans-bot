@@ -3,18 +3,6 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 require('dotenv').config();
-const { CronJob } = require('cron');
-
-// cron job for sending knölvalspåminnelse
-const knolvalsReminder = CronJob.from({ cronTime: '33 * * * *',
-	onTick: () => {
-		client.channels.cache.get(process.env.GEN_CHANNEL_ID).send('@everyone Om 1 minut är klockan 34!');
-	},
-	start: false });
-
-module.exports = {
-	knolvalsReminder: knolvalsReminder,
-};
 
 const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions];
 
