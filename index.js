@@ -3,6 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 require('dotenv').config();
+const { CronJob } = require('cron');
 
 const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions];
 
@@ -10,6 +11,12 @@ const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.DirectMessages, Gat
 const client = new Client({ intents: intents });
 
 client.commands = new Collection();
+// Cron job for sending knölvalsskål reminders at minute 33.
+client.knolvalsReminder = CronJob.from({ cronTime: '33 * * * *',
+	onTick: () => {
+		client.channels.cache.get(process.env.GEN_CHANNEL_ID).send('@everyone Om 1 minut är klockan 34!');
+	},
+	start: false });
 
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
