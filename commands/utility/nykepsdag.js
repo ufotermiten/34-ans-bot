@@ -58,10 +58,10 @@ module.exports = {
 };
 
 // update the file contain kepsdagar with the new kepsdag
-function updateKepsdagar(kepsData) {
-	const kepsDays = JSON.parse(fs.readFileSync(kepsDaysFile));
-	kepsDays['days'].push(kepsData);
-	fs.writeFileSync(kepsDaysFile, JSON.stringify(kepsDays));
+function updateKepsdagar(kepsInfo) {
+	const kepsData = JSON.parse(fs.readFileSync(kepsDaysFile));
+	kepsData.days.push(kepsInfo);
+	fs.writeFileSync(kepsDaysFile, JSON.stringify(kepsData));
 }
 
 // if the given number/string contains less than two digits,
