@@ -9,7 +9,7 @@ module.exports = {
 		try {
 			const kepsReason = kepsdag();
 			if (kepsReason) {
-				interaction.reply(`Klart du ska ha keps! ${kepsReason} :billed_cap:`);
+				interaction.reply(`${kepsReason}, klart du ska ha keps! :billed_cap:`);
 			}
 			else {
 				interaction.reply('Dessvärre är det inte en kepsdag idag :pensive:');
