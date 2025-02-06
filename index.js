@@ -22,7 +22,7 @@ client.kepsdagReminder = CronJob.from({ cronTime: '00 07 * * *',
 	onTick: () => {
 		const kepsReason = kepsdag();
 		if (kepsReason) {
-			client.channels.cache.get(process.env.GEN_CHANNEL_ID).send(`@everyone Idag ska alla ha keps! ${kepsReason} :billed_cap:`);
+			client.channels.cache.get(process.env.GEN_CHANNEL_ID).send(`@everyone ${kepsReason}, så idag ska alla bära keps! :billed_cap:`);
 		}
 	},
 	start: true,
