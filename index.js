@@ -4,6 +4,7 @@ const path = require('node:path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 require('dotenv').config();
 const { CronJob } = require('cron');
+const kepsdag = require('./util/kepsdag');
 
 const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions];
 
@@ -17,6 +18,15 @@ client.knolvalsReminder = CronJob.from({ cronTime: '33 * * * *',
 		client.channels.cache.get(process.env.GEN_CHANNEL_ID).send('@everyone Om 1 minut är klockan 34!');
 	},
 	start: false });
+client.kepsdagReminder = CronJob.from({ cronTime: '00 07 * * *',
+	onTick: () => {
+		const kepsReason = kepsdag();
+		if (kepsReason) {
+			client.channels.cache.get(process.env.GEN_CHANNEL_ID).send(`@everyone Idag ska alla ha keps! ${kepsReason} :billed_cap:`);
+		}
+	},
+	start: true,
+});
 
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
