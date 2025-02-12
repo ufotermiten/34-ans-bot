@@ -51,9 +51,9 @@ module.exports = {
 
 // update the file contain kepsdagar with the new kepsdag
 function updateKepsdagar(kepsInfo) {
-	const kepsData = Papa.parse(fs.readFileSync(kepsDaysFile, 'utf8'), { header: true }).data;
-	kepsData.push(kepsInfo);
-	fs.writeFileSync(kepsDaysFile, Papa.unparse(kepsData), { header: true });
+	const kepsDays = Papa.parse(fs.readFileSync(kepsDaysFile, 'utf8'), { header: true }).data;
+	kepsDays.push(kepsInfo);
+	fs.writeFileSync(kepsDaysFile, Papa.unparse(kepsDays), { header: true });
 }
 
 // builds a kepsInfo object from the options
