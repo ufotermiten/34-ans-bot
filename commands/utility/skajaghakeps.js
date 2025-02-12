@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const kepsdag = require('../../util/kepsdag.js');
+const getKepsReason = require('../../util/getKepsReason.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -7,7 +7,7 @@ module.exports = {
 		.setDescription('För dig som undrar om du ska ha keps på dig'),
 	async execute(interaction) {
 		try {
-			const kepsReason = kepsdag();
+			const kepsReason = getKepsReason();
 			if (kepsReason) {
 				interaction.reply(`${kepsReason}, klart du ska ha keps! :billed_cap:`);
 			}

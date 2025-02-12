@@ -4,7 +4,7 @@ const path = require('node:path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 require('dotenv').config();
 const { CronJob } = require('cron');
-const kepsdag = require('./util/kepsdag');
+const getKepsReason = require('./util/getKepsReason');
 
 const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildScheduledEvents];
 
@@ -20,7 +20,7 @@ client.knolvalsReminder = CronJob.from({ cronTime: '33 * * * *',
 	start: false });
 client.kepsdagReminder = CronJob.from({ cronTime: '00 07 * * *',
 	onTick: () => {
-		const kepsReason = kepsdag();
+		const kepsReason = getKepsReason();
 		if (kepsReason) {
 			client.channels.cache.get(process.env.GEN_CHANNEL_ID).send(`@everyone ${kepsReason}, så idag ska alla bära keps! :billed_cap:`);
 		}
