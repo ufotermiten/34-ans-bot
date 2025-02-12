@@ -17,7 +17,8 @@ module.exports = {
 		}
 		catch (err) {
 			console.error(err);
-			interaction.reply('Jag bajsa på mig :poop:. Be <@&1305532305552703560> städa upp det här :sick:');
+			interaction.reply(`Jag bajsa på mig :poop:. Be <@&${process.env.BOT_DEV_ROLE_ID}>`
+				+ ' städa upp det här :sick:');
 		}
 	},
 };

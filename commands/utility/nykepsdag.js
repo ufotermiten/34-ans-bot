@@ -40,11 +40,12 @@ module.exports = {
 		const kepsInfo = optionsToKepsInfo(interaction.options);
 		try {
 			updateKepsdagar(kepsInfo);
-			interaction.reply(`Ny kepsdag den **${kepsInfo.date}** registrerad! :whale:\n\n**Anledning:** ${kepsInfo.reason}`);
+			interaction.reply(`Ny kepsdag den **${kepsInfo.date}** registrerad!`
+				+ ` :whale:\n\n**Anledning:** ${kepsInfo.reason}`);
 		}
 		catch (err) {
 			console.error(err);
-			interaction.reply('Något gick fel, kontakta <@&1305532305552703560>.');
+			interaction.reply(`Något gick fel, kontakta <@&${process.env.BOT_DEV_ROLE_ID}>.`);
 		}
 	},
 };
