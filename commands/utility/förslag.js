@@ -38,6 +38,10 @@ module.exports = {
 		const { Octokit } = await import('@octokit/core');
 
 		const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
+
+		// defer replying until response from GitHub API
+		await interaction.deferReply();
+
 		const res = await octokit.request(`POST /repos/${owner}/${repo}/issues`, {
   		owner: owner,
   		repo: repo,
@@ -51,6 +55,7 @@ module.exports = {
   		},
 		});
 		const url = res.data.html_url;
-		interaction.reply(`Tack för förslaget ${interaction.member.displayName}! Du kan se status på ditt förslag [här](${url}).`);
+		// send the correct reply
+		await interaction.editReply(`Tack för förslaget ${interaction.member.displayName}! Du kan se status på ditt förslag [här](${url}).`);
 	},
 };
