@@ -1,7 +1,8 @@
 const { SlashCommandBuilder } = require('discord.js');
 const fs = require('node:fs');
+const Papa = require('papaparse');
 
-const kepsDaysFile = './data/kepsdagar.json';
+const kepsDaysFile = './data/kepsdagar.csv';
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -36,19 +37,10 @@ module.exports = {
 				.setRequired(true),
 		),
 	async execute(interaction) {
-		const day = interaction.options.getNumber('dag');
-		const month = interaction.options.getNumber('månad');
-		const year = interaction.options.getNumber('år');
-		const dateString = `${year}-${pad(month)}-${pad(day)}`;
-		const kepsDate = new Date(dateString);
-
-		const recurring = interaction.options.getBoolean('återkommande');
-		const reason = interaction.options.getString('anledning');
-
-		const kepsInfo = { date: kepsDate, recurring: recurring, reason: reason };
+		const kepsInfo = optionsToKepsInfo(interaction.options);
 		try {
-			await updateKepsdagar(kepsInfo);
-			interaction.reply(`Ny kepsdag den **${dateString}** registrerad! :whale:\n\n**Anledning:** ${reason}`);
+			updateKepsdagar(kepsInfo);
+			interaction.reply(`Ny kepsdag den **${kepsInfo.date}** registrerad! :whale:\n\n**Anledning:** ${kepsInfo.reason}`);
 		}
 		catch (err) {
 			console.error(err);
@@ -59,9 +51,22 @@ module.exports = {
 
 // update the file contain kepsdagar with the new kepsdag
 function updateKepsdagar(kepsInfo) {
-	const kepsData = JSON.parse(fs.readFileSync(kepsDaysFile));
-	kepsData.days.push(kepsInfo);
-	fs.writeFileSync(kepsDaysFile, JSON.stringify(kepsData));
+	const kepsData = Papa.parse(fs.readFileSync(kepsDaysFile, 'utf8'), { header: true }).data;
+	kepsData.push(kepsInfo);
+	fs.writeFileSync(kepsDaysFile, Papa.unparse(kepsData), { header: true });
+}
+
+// builds a kepsInfo object from the options
+function optionsToKepsInfo(options) {
+	const day = options.getNumber('dag');
+	const month = options.getNumber('månad');
+	const year = options.getNumber('år');
+	const dateString = `${year}-${pad(month)}-${pad(day)}`;
+
+	const recurring = options.getBoolean('återkommande');
+	const reason = options.getString('anledning');
+
+	return { date: dateString, recurring, reason };
 }
 
 // if the given number/string contains less than two digits,
