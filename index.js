@@ -6,7 +6,7 @@ require('dotenv').config();
 const { CronJob } = require('cron');
 const kepsdag = require('./util/kepsdag');
 
-const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions];
+const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildScheduledEvents];
 
 // Create a new client instance
 const client = new Client({ intents: intents });
