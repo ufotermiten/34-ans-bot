@@ -39,13 +39,14 @@ module.exports = {
 	async execute(interaction) {
 		const kepsInfo = optionsToKepsInfo(interaction.options);
 		try {
+			interaction.deferReply();
 			updateKepsdagar(kepsInfo);
-			interaction.reply(`Ny kepsdag den **${kepsInfo.date}** registrerad!`
+			interaction.editReply(`Ny kepsdag den **${kepsInfo.date}** registrerad!`
 				+ ` :whale:\n\n**Anledning:** ${kepsInfo.reason}`);
 		}
 		catch (err) {
 			console.error(err);
-			interaction.reply(`Något gick fel, kontakta <@&${process.env.BOT_DEV_ROLE_ID}>.`);
+			interaction.editReply(`Något gick fel, kontakta <@&${process.env.BOT_DEV_ROLE_ID}>.`);
 		}
 	},
 };

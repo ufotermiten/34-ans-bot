@@ -7,17 +7,18 @@ module.exports = {
 		.setDescription('För dig som undrar om du ska ha keps på dig'),
 	async execute(interaction) {
 		try {
+			interaction.deferReply();
 			const kepsReason = getKepsReason();
 			if (kepsReason) {
-				interaction.reply(`${kepsReason}, klart du ska ha keps! :billed_cap:`);
+				interaction.editReply(`${kepsReason}, klart du ska ha keps! :billed_cap:`);
 			}
 			else {
-				interaction.reply('Dessvärre är det inte en kepsdag idag :pensive:');
+				interaction.editReply('Dessvärre är det inte en kepsdag idag :pensive:');
 			}
 		}
 		catch (err) {
 			console.error(err);
-			interaction.reply(`Jag bajsa på mig :poop:. Be <@&${process.env.BOT_DEV_ROLE_ID}>`
+			interaction.editReply(`Jag bajsa på mig :poop:. Be <@&${process.env.BOT_DEV_ROLE_ID}>`
 				+ ' städa upp det här :sick:');
 		}
 	},
