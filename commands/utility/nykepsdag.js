@@ -38,8 +38,8 @@ module.exports = {
 		),
 	async execute(interaction) {
 		const kepsInfo = optionsToKepsInfo(interaction.options);
+		await interaction.deferReply();
 		try {
-			interaction.deferReply();
 			updateKepsdagar(kepsInfo);
 			interaction.editReply(`Ny kepsdag den **${kepsInfo.date}** registrerad!`
 				+ ` :whale:\n\n**Anledning:** ${kepsInfo.reason}`);

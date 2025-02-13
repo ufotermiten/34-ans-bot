@@ -6,8 +6,8 @@ module.exports = {
 		.setName('skajaghakeps')
 		.setDescription('För dig som undrar om du ska ha keps på dig'),
 	async execute(interaction) {
+		await interaction.deferReply();
 		try {
-			interaction.deferReply();
 			const kepsReason = getKepsReason();
 			if (kepsReason) {
 				interaction.editReply(`${kepsReason}, klart du ska ha keps! :billed_cap:`);
