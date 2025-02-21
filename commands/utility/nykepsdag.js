@@ -60,13 +60,13 @@ function updateKepsdagar(kepsInfo) {
 
 // builds a kepsInfo object from the options
 function optionsToKepsInfo(options) {
+	const recurring = options.getBoolean('återkommande');
+	const reason = options.getString('anledning');
+
 	const day = options.getNumber('dag');
 	const month = options.getNumber('månad');
 	const year = options.getNumber('år');
-	const dateString = `${year}-${pad(month)}-${pad(day)}`;
-
-	const recurring = options.getBoolean('återkommande');
-	const reason = options.getString('anledning');
+	const dateString = `${!recurring ? year : 'XXXX'}-${pad(month)}-${pad(day)}`;
 
 	return { date: dateString, recurring, reason };
 }
