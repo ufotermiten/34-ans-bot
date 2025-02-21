@@ -1,15 +1,12 @@
-const fs = require('node:fs');
-const Papa = require('papaparse');
-
-const kepsDaysFile = './data/kepsdagar.csv';
+const getKepsDays = require('./getKepsDays');
 
 module.exports = () => {
 	const today = new Date().toISOString().slice(0, 10);
 	// const kepsData = JSON.parse(fs.readFileSync(kepsDaysFile));
-	const kepsDays = Papa.parse(fs.readFileSync(kepsDaysFile, 'utf8'), { header: true }).data;
+	const kepsDays = getKepsDays();
 	for (const kepsDay of kepsDays) {
 		// if recurring kepsdag, check if days and months match
-		if (kepsDay.recurring == 'true') {
+		if (kepsDay.recurring) {
 			if (dayMonthEq(today, kepsDay.date)) return kepsDay.reason;
 		}
 		// else include year
