@@ -21,7 +21,9 @@
 		"discord.js": "^14.16.3",
 		"dotenv": "^16.4.5",
 		"fs": "^0.0.1-security",
-		"papaparse": "^5.5.2"
+		"papaparse": "^5.5.2",
+		"sequelize": "^6.37.5",
+		"sqlite3": "^5.1.7"
 	},
 	"devDependencies": {
 		"eslint": "^9.14.0"
