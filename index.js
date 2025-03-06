@@ -18,11 +18,11 @@ client.knolvalsReminder = CronJob.from({ cronTime: '33 * * * *',
 		client.channels.cache.get(process.env.GEN_CHANNEL_ID).send('@everyone Om 1 minut är klockan 34!');
 	},
 	start: false });
-client.kepsdagReminder = CronJob.from({ cronTime: '00 07 * * *',
+client.kepsdagReminder = CronJob.from({ cronTime: '00 20 * * *',
 	onTick: () => {
-		const kepsReason = getKepsReason();
+		const kepsReason = getKepsReason('reminder');
 		if (kepsReason) {
-			client.channels.cache.get(process.env.GEN_CHANNEL_ID).send(`@everyone ${kepsReason}, så idag ska alla bära keps! :billed_cap:`);
+			client.channels.cache.get(process.env.GEN_CHANNEL_ID).send(`@everyone ${kepsReason} imorgon, så då ska alla bära keps! :billed_cap:`);
 		}
 	},
 	start: true,

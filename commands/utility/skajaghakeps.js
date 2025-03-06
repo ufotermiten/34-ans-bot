@@ -8,7 +8,7 @@ module.exports = {
 	async execute(interaction) {
 		await interaction.deferReply();
 		try {
-			const kepsReason = getKepsReason();
+			const kepsReason = getKepsReason('query');
 			if (kepsReason) {
 				interaction.editReply(`${kepsReason}, klart du ska ha keps! :billed_cap:`);
 			}

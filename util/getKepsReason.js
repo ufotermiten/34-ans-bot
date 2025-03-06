@@ -1,16 +1,21 @@
 const getKepsDays = require('./getKepsDays');
 
-module.exports = () => {
-	const today = new Date().toISOString().slice(0, 10);
-	// const kepsData = JSON.parse(fs.readFileSync(kepsDaysFile));
+module.exports = (type) => {
+	// the variable names are confusing
+	// if the type of keps-check is reminder, we need
+	// to look if the next day is a kepsdag, otherwise
+	// check against todays date
+	const today = new Date();
+	today.setDate(type == 'reminder' ? today.getDate() + 1 : today.getDate());
+	const compareDate = today.toISOString().slice(0, 10);
 	const kepsDays = getKepsDays();
 	for (const kepsDay of kepsDays) {
 		// if recurring kepsdag, check if days and months match
 		if (kepsDay.recurring) {
-			if (dayMonthEq(today, kepsDay.date)) return kepsDay.reason;
+			if (dayMonthEq(compareDate, kepsDay.date)) return kepsDay.reason;
 		}
 		// else include year
-		else if (eq(today, kepsDay.date)) {return kepsDay.reason;}
+		else if (eq(compareDate, kepsDay.date)) {return kepsDay.reason;}
 	}
 	return null;
 };
