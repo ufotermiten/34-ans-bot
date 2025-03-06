@@ -1,2 +1,8 @@
 date,recurring,reason
 2025-02-12,false,Det är LV4 dag 3
+XXXX-04-03,true,Det är den 3/4
+XXXX-02-03,true,Det är den 34:e dagen på året
+2025-04-10,false,Det är LV3 dag 4
+2025-04-16,false,Det är LV4 dag 3
+XXXX-03-04,true,Det är den 4/3
+2025-03-06,false,Det är den 34:de läsdagen
